@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,7 +12,7 @@
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+          rel="stylesheet">
 
     <!-- Font Awesome 5.15.4 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -68,7 +67,6 @@
         .social-media a i:hover {
             color: #d2a9a4;
         }
-
 
         .contact-section {
             padding: 80px 0;
@@ -178,7 +176,6 @@
             color: #ff523b;
         }
 
-
         @media (max-width: 768px) {
             .contact-section .row {
                 flex-direction: column;
@@ -202,12 +199,36 @@
                 font-size: 18px;
                 color: #ff523b;
             }
+        }
 
+        /* ============== SUCCESS NOTIFICATION ============== */
+        #message-sent-success {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #28a745;
+            color: #fff;
+            padding: 30px 40px;
+            border-radius: 10px;
+            font-size: 18px;
+            text-align: center;
+            display: none; /* hidden by default */
+            opacity: 0;
+            z-index: 9999;
+            transition: opacity 0.7s ease;
+        }
+        #message-sent-success.show {
+            display: block;
+            opacity: 1;
         }
     </style>
 </head>
 
 <body>
+    <!-- SUCCESS NOTIFICATION (HIDDEN) -->
+    <div id="message-sent-success">Message was sent successfully!</div>
+
     <!-- Header Section -->
     <div class="header">
         <div class="container">
@@ -240,7 +261,7 @@
                 <!-- Contact Form -->
                 <div class="col-2">
                     <h1>Get In Touch</h1>
-                    <form action="#" method="post">
+                    <form id="contact-form">
                         <input type="text" placeholder="Your Name" required>
                         <input type="email" placeholder="Your Email" required>
                         <input type="text" placeholder="Subject" required>
@@ -299,10 +320,10 @@
                     <h3>Follow Us</h3>
                     <ul>
                         <li><a href="https://www.facebook.com/lolo.caw.9/?_rdr" target="_blank">Facebook</a></li>
-                        <li><a href="https://www.linkedin.com/in/ahmad-arja-6a21432b6/" target="_blank">LinkedIN</a>
-                        </li>
-                        <li><a href="https://www.instagram.com/ahmad.al3rja?igsh=MWlnMjh0YmNjcGZpZg%3D%3D&utm_source=qr"
-                                target="_blank">Instagram</a></li>
+                        <li><a href="https://www.linkedin.com/in/ahmad-arja-6a21432b6/" target="_blank">LinkedIN</a></li>
+                        <li><a
+                           href="https://www.instagram.com/ahmad.al3rja?igsh=MWlnMjh0YmNjcGZpZg%3D%3D&utm_source=qr"
+                           target="_blank">Instagram</a></li>
                         <li><a href="https://www.youtube.com" target="_blank">YouTube</a></li>
                     </ul>
                 </div>
@@ -314,7 +335,7 @@
 
     <!-- JavaScript for Toggle Menu and Cart Count -->
     <script>
-
+        // Toggle Menu
         var MenuItems = document.getElementById("MenuItems");
         MenuItems.style.maxHeight = "0px";
         function menutoggle() {
@@ -329,11 +350,8 @@
             }
         }
 
-
-
+        // Example cart count management
         let cartCount = 3;
-
-
         function updateCartCount(count) {
             cartCount = count;
             const cartIcon = document.getElementById('cart-icon');
@@ -345,38 +363,46 @@
                 cartIcon.classList.remove('active');
             }
         }
-
-
         updateCartCount(cartCount);
-
-
-
-
-
     </script>
-    <script>
 
+    <script>
+        // 1) Toggle Menu Script (if not already present)
         var MenuItems = document.getElementById("MenuItems");
         if (MenuItems) {
             MenuItems.style.maxHeight = "0px";
         }
 
-
-
+        // 2) Automatically set the active nav link based on the current page URL
         const currentLocation = window.location.href;
         const navLinks = document.querySelectorAll('#MenuItems li a');
-
         navLinks.forEach(link => {
-
-            if (link.href === currentLocation) {
+            if (link.href === currentLocation){
                 link.classList.add('active');
-            }
-            else {
+            } else {
                 link.classList.remove('active');
             }
         });
+
+        // ============ SHOW SUCCESS MESSAGE ON FORM SUBMIT =============
+        const contactForm = document.getElementById('contact-form');
+        const messageSentBox = document.getElementById('message-sent-success');
+
+        // Intercept form's "submit" event
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault(); // prevent page reload
+
+            // Show the success box
+            messageSentBox.classList.add('show');
+
+            // Hide after 2 seconds
+            setTimeout(() => {
+                messageSentBox.classList.remove('show');
+            }, 2000);
+
+            // Optionally clear the form fields
+            contactForm.reset();
+        });
     </script>
-
 </body>
-
 </html>
