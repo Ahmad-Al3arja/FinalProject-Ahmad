@@ -1,0 +1,98 @@
+[
+    {
+        "id": 1,
+        "name": "Eternal Blossom",
+        "image": "new-product/onsale/D1-1.png",
+        "price": 75.00,
+        "rating": 4.5,
+        "description": "Fresh florals and warm musk, ideal for any event."
+    },
+    {
+        "id": 2,
+        "name": "Midnight Noir",
+        "image": "new-product/N4-2.png",
+        "price": 85.00,
+        "rating": 4.7,
+        "description": "Rich amber with spicy notes for evenings."
+    },
+    {
+        "id": 3,
+        "name": "Sunset Serenade",
+        "image": "new-product/onsale/D2-1.png",
+        "price": 65.00,
+        "rating": 4.3,
+        "description": "Citrus and woody tones for a soothing effect."
+    },
+    {
+        "id": 4,
+        "name": "Crystal Essence",
+        "image": "new-product/onsale/D3-1.png",
+        "price": 70.00,
+        "rating": 4.6,
+        "description": "Delicate jasmine and sandalwood for elegance."
+    },
+    {
+        "id": 5,
+        "name": "Velvet Dawn",
+        "image": "new-product/onsale/D4-1.png",
+        "price": 80.00,
+        "rating": 4.8,
+        "description": "Bergamot and vanilla for a captivating morning."
+    },
+    {
+        "id": 6,
+        "name": "Amber Twilight",
+        "image": "new-product/onsale/D6-1.png",
+        "price": 90.00,
+        "rating": 4.9,
+        "description": "Sweet amber and tobacco for a bold statement."
+    },
+    {
+        "id": 7,
+        "name": "Lunar Whisper",
+        "image": "new-product/onsale/D9-1.png",
+        "price": 68.00,
+        "rating": 4.4,
+        "description": "Soft lavender and creamy vanilla, gently alluring."
+    },
+    {
+        "id": 8,
+        "name": "Golden Horizon",
+        "image": "new-product/onsale/D10-1.png",
+        "price": 72.00,
+        "rating": 4.2,
+        "description": "Grapefruit and cedarwood, radiates positivity."
+    },
+    {
+        "id": 9,
+        "name": "Mystic Orchid",
+        "image": "new-product/onsale/D11-1.png",
+        "price": 78.00,
+        "rating": 4.5,
+        "description": "Exotic orchid and earthy patchouli, magical experience."
+    },
+    {
+        "id": 10,
+        "name": "Twilight Garden",
+        "image": "new-product/onsale/D12-1.png",
+        "price": 82.00,
+        "rating": 4.7,
+        "description": "Green leaves and blooming roses, romantic aroma."
+    },
+    {
+        "id": 11,
+        "name": "Twilight Garden",
+        "image": "new-product/N5-1.png",
+        "price": 82.00,
+        "rating": 4.7,
+        "description": "Green leaves and blooming roses, romantic aroma."
+    },
+    {
+        "id": 12,
+        "name": "Twilight Garden",
+        "image": "new-product/N4-2.png",
+        "price": 82.00,
+        "rating": 4.7,
+        "description": "Green leaves and blooming roses, romantic aroma."
+    }
+]

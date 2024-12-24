@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | Redstore</title>
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Preconnect for Google Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome 5.15.4 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <!-- Inline CSS for Cart Badge and About Page -->
+    <style>
+        i {
+            color: black !important;
+            margin-top: 10px;
+        }
+
+        .header {
+            background-color: #f9f9f9;
+            background-image: none !important;
+            height: 25vh;
+        }
+
+        .header::after {
+            content: none;
+        }
+
+        .cart-icon {
+            position: relative;
+            display: inline-block;
+        }
+
+        .cart-icon::after {
+            content: attr(data-count);
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: red;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .cart-icon.active::after {
+            display: block;
+        }
+
+
+        .about-section {
+            padding: 60px 0;
+            background-color: #f9f9f9;
+        }
+
+        .about-section .row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .about-section .col-2 {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+        }
+
+        .about-section img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .about-section img:hover {
+            transform: scale(1.05);
+        }
+
+        .about-section h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .about-section p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .mission {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 40px;
+        }
+
+        .mission h2 {
+            margin-bottom: 20px;
+            font-size: 28px;
+            color: #333;
+        }
+
+        .mission p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+
+        @media (max-width: 768px) {
+            .about-section .row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header Section -->
+    <div class="header">
+        <div class="container">
+            <div class="navbar">
+                <div class="logo">
+                    <a href="index.html"><img src="logo.png" width="125px" alt="Redstore Logo"></a>
+                </div>
+                <nav>
+                    <ul id="MenuItems">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="product.html">Product</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li>
+                            <a href="cart.html" class="cart-icon" id="cart-icon">
+                                <i class="fas fa-shopping-cart"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <i style="display: none;" class="fas fa-bars menu-icon" onclick="menutoggle()"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <div class="about-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-2">
+                    <img src="blog/blog4.jpg" alt="About Us Image">
+                </div>
+                <div class="col-2">
+                    <h1>About Redstore</h1>
+                    <p>Welcome to Redstore, your premier destination for exquisite fragrances. We're dedicated to
+                        providing you with the finest selection of perfumes, with a focus on quality, craftsmanship, and
+                        individuality.</p>
+                    <p>Founded in 2020, Redstore has blossomed into a haven for fragrance enthusiasts. When we first
+                        began, our passion for creating memorable scent experiences drove us to conduct in-depth
+                        research and inspired us to transform our dedication into a flourishing online store. Today, we
+                        proudly serve customers across the globe and are delighted to be part of the enchanting world of
+                        perfumery.</p>
+                </div>
+            </div>
+
+            <div class="mission">
+                <h2>Our Mission</h2>
+                <p>At Redstore, our mission is to bring the art of fragrance to life, offering everyone the opportunity
+                    to indulge in luxurious scents that inspire and delight. We strive to provide exceptional perfumes
+                    that evoke emotions, enhance individuality, and create unforgettable experiences. Our commitment to
+                    excellence drives us to continuously innovate and curate unique aromas, ensuring we meet the
+                    evolving tastes of our cherished community.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <div class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="footer-col-1">
+                    <h3>Download Our App</h3>
+                    <p>Download App for Android and iOS mobile phones.</p>
+                    <div class="app-logo">
+                        <img src="play-store.png" alt="Play Store">
+                        <img src="app-store.png" alt="App Store">
+                    </div>
+                </div>
+                <div class="footer-col-2">
+                    <img src="logo-white.png" alt="Redstore Logo">
+                    <p>Our purpose is to sustainably make the pleasure and benefits of sports accessible to the many.
+                    </p>
+                </div>
+                <div class="footer-col-3">
+                    <h3>Useful Links</h3>
+                    <ul>
+                        <li><a href="#">Coupons</a></li>
+                        <li><a href="#">Blog Post</a></li>
+                        <li><a href="#">Return Policy</a></li>
+                        <li><a href="#">Join Affiliate</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col-4">
+                    <h3>Follow Us</h3>
+                    <ul>
+                        <li><a href="https://www.facebook.com/lolo.caw.9/?_rdr" target="_blank">Facebook</a></li>
+                        <li><a href="https://www.linkedin.com/in/ahmad-arja-6a21432b6/" target="_blank">LinkedIN</a>
+                        </li>
+                        <li><a href="https://www.instagram.com/ahmad.al3rja?igsh=MWlnMjh0YmNjcGZpZg%3D%3D&utm_source=qr"
+                                target="_blank">Instagram</a></li>
+                        <li><a href="https://www.youtube.com" target="_blank">YouTube</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <p class="developer">© 2025 Developed By Ahmad Alarjah</p>
+        </div>
+    </div>
+
+    <!-- JavaScript for Toggle Menu and Cart Count -->
+    <script>
+
+        var MenuItems = document.getElementById("MenuItems");
+        MenuItems.style.maxHeight = "0px";
+        function menutoggle() {
+            if (MenuItems && MenuItems.style.maxHeight === "0px") {
+                MenuItems.style.maxHeight = "300px";
+                MenuItems.style.zIndex = "1000 !important";
+                MenuItems.style.transition = "max-height 0.5s ease-in";
+                MenuItems.style.display = "block";
+                MenuItems.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+            } else if (MenuItems) {
+                MenuItems.style.maxHeight = "0px";
+            }
+        }
+
+
+        let cartCount = 3;
+
+
+        function updateCartCount(count) {
+            cartCount = count;
+            const cartIcon = document.getElementById('cart-icon');
+            if (cartCount > 0) {
+                cartIcon.setAttribute('data-count', cartCount);
+                cartIcon.classList.add('active');
+            } else {
+                cartIcon.removeAttribute('data-count');
+                cartIcon.classList.remove('active');
+            }
+        }
+
+
+        updateCartCount(cartCount);
+
+
+
+
+
+    </script>
+    <script>
+
+        var MenuItems = document.getElementById("MenuItems");
+        if (MenuItems) {
+            MenuItems.style.maxHeight = "0px";
+        }
+
+
+
+        const currentLocation = window.location.href;
+        const navLinks = document.querySelectorAll('#MenuItems li a');
+
+        navLinks.forEach(link => {
+
+            if (link.href === currentLocation) {
+                link.classList.add('active');
+            }
+            else {
+                link.classList.remove('active');
+            }
+        });
+    </script>
+
+</body>
+
+</html>

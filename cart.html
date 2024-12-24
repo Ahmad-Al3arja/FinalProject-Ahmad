@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cart - Redstore</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Preconnect for Google Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+  <!-- Inline CSS for Cart Page & Success Message -->
+  <style>
+    .cart-info p {
+      color: rgba(0, 0, 0, 0.516) !important;
+    }
+
+    .cart-page table tbody tr td {
+      vertical-align: middle;
+    }
+
+    .cart-page input[type="number"] {
+      width: 60px;
+      text-align: center;
+    }
+
+    .cart-info a.remove-item {
+      color: #ff4b2b;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .cart-info a.remove-item:hover {
+      color: #ff416c;
+    }
+
+    .checkout-btn {
+      background-color: #ff4b2b;
+      color: white;
+      border: none;
+      padding: 28px;
+      margin-top: 20px;
+      cursor: pointer;
+      font-size: 16px;
+      border-radius: 10px;
+      transition: background-color 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .checkout-btn:hover {
+      background-color: #ff416c;
+    }
+
+
+    #success-message {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #28a745;
+      color: #fff;
+      padding: 30px 40px;
+      border-radius: 10px;
+      font-size: 18px;
+      text-align: center;
+      display: none;
+      opacity: 0;
+      z-index: 9999;
+      transition: opacity 0.7s ease;
+    }
+
+    #success-message.show {
+      display: block;
+      opacity: 1;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Success Message Container -->
+  <div id="success-message">Checkout Successful! Thank you!</div>
+
+  <div class="container">
+    <div class="navbar">
+      <div class="logo">
+        <a href="index.html"><img src="logo.png" width="125px" alt="Redstore Logo" /></a>
+      </div>
+      <nav>
+        <ul id="MenuItems">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="product.html">Product</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li>
+            <a href="cart.html" class="cart-icon" id="cart-icon">
+              <i style="color: black;" class="fas fa-shopping-cart"></i>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <i style="display: none;" class="fas fa-bars menu-icon" onclick="menutoggle()"></i>
+    </div>
+  </div>
+
+  <div class="small-container cart-page">
+    <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody id="cart-items">
+        <!-- Dynamic Cart Rows Will Be Injected Here -->
+      </tbody>
+    </table>
+
+    <div class="total-price" id="cart-totals">
+      <!-- Totals will be injected here dynamically -->
+    </div>
+
+    <!-- Checkout Button -->
+    <div style="text-align: right;">
+      <button class="checkout-btn" id="checkout-btn">Proceed to Checkout</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="footer-col-1">
+          <h3>Download Our App</h3>
+          <p>Download App for Android and iOS mobile phones.</p>
+          <div class="app-logo">
+            <img src="play-store.png" alt="Play Store" />
+            <img src="app-store.png" alt="App Store" />
+          </div>
+        </div>
+        <div class="footer-col-2">
+          <img src="logo-white.png" alt="Redstore Logo" />
+          <p>
+            Our purpose is to sustainably make the pleasure and benefits of sports accessible to the many.
+          </p>
+        </div>
+        <div class="footer-col-3">
+          <h3>Useful Links</h3>
+          <ul>
+            <li><a href="#">Coupons</a></li>
+            <li><a href="#">Blog Post</a></li>
+            <li><a href="#">Return Policy</a></li>
+            <li><a href="#">Join Affiliate</a></li>
+          </ul>
+        </div>
+        <div class="footer-col-4">
+          <h3>Follow Us</h3>
+          <ul>
+            <li><a href="https://www.facebook.com/lolo.caw.9/?_rdr" target="_blank">Facebook</a></li>
+            <li><a href="https://www.linkedin.com/in/ahmad-arja-6a21432b6/" target="_blank">LinkedIN</a></li>
+            <li><a href="https://www.instagram.com/ahmad.al3rja?igsh=MWlnMjh0YmNjcGZpZg%3D%3D&utm_source=qr"
+                target="_blank">Instagram</a></li>
+            <li><a href="https://www.youtube.com" target="_blank">YouTube</a></li>
+          </ul>
+        </div>
+      </div>
+      <hr />
+      <p class="developer">© 2025 Developed By Ahmad Alarjah</p>
+    </div>
+  </div>
+
+  <script>
+
+    var MenuItems = document.getElementById("MenuItems");
+    if (MenuItems) {
+      MenuItems.style.maxHeight = "0px";
+    }
+
+
+
+    let cart = localStorage.getItem("cart")
+      ? JSON.parse(localStorage.getItem("cart"))
+      : [];
+
+    function renderCart() {
+      const cartItemsContainer = document.getElementById("cart-items");
+      cartItemsContainer.innerHTML = "";
+
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = `
+          <tr>
+            <td colspan="3" style="text-align:center;">
+              Your cart is empty.
+            </td>
+          </tr>
+        `;
+        document.getElementById("cart-totals").innerHTML = "";
+        return;
+      }
+
+      let subtotal = 0;
+
+      cart.forEach((item, index) => {
+        const itemTotal = parseFloat(item.price) * item.quantity;
+        subtotal += itemTotal;
+
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>
+            <div class="cart-info">
+              <img src="${item.image}" alt="${item.name}">
+              <div>
+                <p>${item.name}</p>
+                <small>Price: $${item.price.toFixed(2)}</small><br>
+                <a class="remove-item" data-index="${index}">Remove</a>
+              </div>
+            </div>
+          </td>
+          <td>
+            <input 
+              type="number" 
+              min="1" 
+              value="${item.quantity}" 
+              data-index="${index}" 
+              class="item-quantity"
+            >
+          </td>
+          <td>$${itemTotal.toFixed(2)}</td>
+        `;
+        cartItemsContainer.appendChild(row);
+      });
+
+
+      const taxRate = 0.1;
+      const tax = subtotal * taxRate;
+      const total = subtotal + tax;
+
+      document.getElementById("cart-totals").innerHTML = `
+        <table>
+          <tr>
+            <td>Subtotal</td>
+            <td>$${subtotal.toFixed(2)}</td>
+          </tr>
+          <tr>
+            <td>Tax (10%)</td>
+            <td>$${tax.toFixed(2)}</td>
+          </tr>
+          <tr>
+            <td>Total</td>
+            <td>$${total.toFixed(2)}</td>
+          </tr>
+        </table>
+      `;
+
+      attachRemoveListeners();
+      attachQuantityListeners();
+    }
+
+    function attachRemoveListeners() {
+      document.querySelectorAll(".remove-item").forEach((link) => {
+        link.addEventListener("click", () => {
+          const index = link.getAttribute("data-index");
+          removeCartItem(index);
+        });
+      });
+    }
+
+    function attachQuantityListeners() {
+      document.querySelectorAll(".item-quantity").forEach((input) => {
+        input.addEventListener("change", () => {
+          const index = input.getAttribute("data-index");
+          const newQty = parseInt(input.value);
+
+          if (newQty <= 0) {
+            removeCartItem(index);
+          } else {
+            cart[index].quantity = newQty;
+            updateCart();
+          }
+        });
+      });
+    }
+
+    function updateCart() {
+      localStorage.setItem("cart", JSON.stringify(cart));
+      renderCart();
+    }
+
+    function removeCartItem(index) {
+      cart.splice(index, 1);
+      updateCart();
+    }
+
+
+    function showSuccessMessage() {
+      const successMsg = document.getElementById("success-message");
+      successMsg.classList.add("show");
+
+
+      setTimeout(() => {
+        successMsg.classList.remove("show");
+
+      }, 2000);
+    }
+
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderCart();
+      const checkoutBtn = document.getElementById("checkout-btn");
+      if (checkoutBtn) {
+        checkoutBtn.addEventListener("click", () => {
+
+          if (cart.length === 0) {
+            alert("Cart is empty, please add items before checkout.");
+          } else {
+
+            showSuccessMessage();
+
+
+            cart = [];
+            localStorage.removeItem("cart");
+            renderCart();
+          }
+        });
+      }
+    });
+  </script>
+
+  <script>
+
+    var MenuItems = document.getElementById("MenuItems");
+    if (MenuItems) {
+      MenuItems.style.maxHeight = "0px";
+    }
+    function menutoggle() {
+      if (MenuItems && MenuItems.style.maxHeight === "0px") {
+        MenuItems.style.maxHeight = "300px";
+        MenuItems.style.zIndex = "1000 !important";
+        MenuItems.style.transition = "max-height 0.5s ease-in";
+        MenuItems.style.display = "block";
+        MenuItems.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+      } else if (MenuItems) {
+        MenuItems.style.maxHeight = "0px";
+      }
+    }
+
+
+    const currentLocation = window.location.href;
+    const navLinks = document.querySelectorAll("#MenuItems li a");
+
+    navLinks.forEach((link) => {
+      if (link.href === currentLocation) {
+        link.classList.add("active");
+      } else {
+        link.classList.remove("active");
+      }
+    });
+  </script>
+</body>
+
+</html>

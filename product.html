@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>All Products - Redstore</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Preconnect for Google Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+  <!-- Inline CSS for Toast Container, Additional Styling, and Modal (unchanged) -->
+  <style>
+    .toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .toast {
+      background-color: rgba(60, 179, 113, 0.9);
+      color: #fff;
+      padding: 15px 20px;
+      border-radius: 5px;
+      font-size: 14px;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: opacity 0.6s, transform 0.6s;
+      z-index: 1000 !important;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+      z-index: 1000 !important;
+    }
+
+
+    .cart-icon {
+      position: relative;
+      display: inline-block;
+    }
+
+    .cart-icon::after {
+      content: attr(data-count);
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background-color: red;
+      color: white;
+      padding: 2px 6px;
+      border-radius: 50%;
+      font-size: 12px;
+      font-weight: bold;
+      display: none;
+    }
+
+    .cart-icon.active::after {
+      display: block;
+    }
+
+    #cart-icon i {
+      color: black;
+      margin-top: 10px;
+    }
+
+
+    .add-to-cart {
+      background-color: #ff4b2b;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 14px;
+      border-radius: 5px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .add-to-cart::after {
+      content: "\f07a";
+      font-family: "Font Awesome 5 Free";
+      font-weight: 900;
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .add-to-cart:hover::after {
+      opacity: 1;
+    }
+
+    .add-to-cart:hover {
+      background-color: #ff416c;
+      transform: scale(1.05);
+    }
+
+    .add-to-cart:active {
+      transform: scale(1);
+    }
+
+    .add-to-cart:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: space-between;
+    }
+
+    .col-4 {
+      flex: 1 1 calc(25% - 20px);
+      box-sizing: border-box;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      text-align: center;
+      background-color: #fff;
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+    .col-4:hover {
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      transform: translateY(-10px);
+    }
+
+    .col-4 img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .rating i {
+      color: #ff4b2b;
+      margin-right: 5px;
+    }
+
+
+    #single-product-modal.modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    .modal-content {
+      background: #fff;
+      margin: 50px auto;
+      max-width: 600px;
+      padding: 20px;
+      border-radius: 10px;
+      position: relative;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 24px;
+      color: #999;
+      cursor: pointer;
+    }
+
+    .close-modal:hover {
+      color: #ff4b2b;
+    }
+
+    #single-product-details img {
+      width: 100%;
+      max-height: 300px;
+      object-fit: contain;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      max-width: 100%;
+      height: auto;
+    }
+
+    #single-product-details h2 {
+      margin: 15px 0 10px;
+      color: #333;
+    }
+
+    #single-product-details .rating i {
+      color: #ff4b2b;
+      margin-right: 5px;
+    }
+
+    #single-product-details p {
+      color: #555;
+    }
+
+    .add-to-cart-modal {
+      background-color: #ff4b2b;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 15px;
+      display: inline-block;
+      transition: background-color 0.3s ease;
+    }
+
+    .add-to-cart-modal:hover {
+      background-color: #ff416c;
+    }
+
+
+    @media (max-width: 1200px) {
+      .col-4 {
+        flex: 1 1 calc(33.333% - 20px);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .col-4 {
+        flex: 1 1 calc(50% - 20px);
+      }
+
+      .row.row-2 {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      #search-input {
+        width: 100%;
+        margin-bottom: 10px;
+        margin-right: 0;
+      }
+
+      #sort-select {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .col-4 {
+        flex: 1 1 100%;
+      }
+    }
+
+    #search-input {
+      padding: 10px 15px;
+      width: 250px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
+      margin-right: 20px;
+    }
+
+    #search-input:focus {
+      outline: none;
+      border-color: #ff4b2b;
+      box-shadow: 0 0 5px rgba(255, 75, 43, 0.5);
+    }
+
+    .page-btn {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+    }
+
+    .page-btn span {
+      font-size: 20px;
+      padding: 10px 15px;
+      border: 1px solid #ddd;
+      margin-right: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      display: flex;
+      align-items: center;
+    }
+
+    .page-btn span:hover,
+    .page-btn span.active {
+      background-color: #ff4b2b;
+      color: white;
+      border: none;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Toast Container for multiple messages -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <div class="container">
+    <div class="navbar">
+      <div class="logo">
+        <a href="index.html"><img src="logo.png" width="125px" alt="Redstore Logo" /></a>
+      </div>
+      <nav>
+        <ul id="MenuItems">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="product.html">Product</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li>
+            <a href="cart.html" class="cart-icon" id="cart-icon" aria-label="View Cart">
+              <i class="fas fa-shopping-cart"></i>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- Font Awesome Bars Icon - hidden if you want, or show on small screens -->
+      <i style="display: none;" class="fas fa-bars menu-icon" onclick="menutoggle()"></i>
+    </div>
+  </div>
+
+  <div class="small-container">
+    <div class="row row-2">
+      <h2>All Products</h2>
+      <!-- Search Bar -->
+      <input type="text" id="search-input" placeholder="Search perfumes..." aria-label="Search Products" />
+      <!-- Sorting Dropdown -->
+      <select id="sort-select">
+        <option value="default">Default Sorting</option>
+        <option value="price-asc">Sort by Price: Low to High</option>
+        <option value="price-desc">Sort by Price: High to Low</option>
+        <option value="popularity">Sort by Popularity</option>
+        <option value="sale">Sort by Sale</option>
+        <option value="rating">Sort by Rating</option>
+      </select>
+    </div>
+    <div class="row" id="product-container" style="min-height: 700px;">
+      <!-- Dynamic Products Will Be Injected Here -->
+    </div>
+    <div class="page-btn">
+      <span class="active">1</span>
+      <span>2</span>
+      <span>3</span>
+      <span>4</span>
+      <span>&#8594;</span>
+    </div>
+  </div>
+
+  <!-- ========== SINGLE PRODUCT MODAL (HIDDEN) ========== -->
+  <div id="single-product-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" id="close-modal">&times;</span>
+      <div id="single-product-details"><!-- Filled by JavaScript --></div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="footer-col-1">
+          <h3>Download Our App</h3>
+          <p>Download App for Android and iOS mobile phones.</p>
+          <div class="app-logo">
+            <img src="play-store.png" alt="Play Store" />
+            <img src="app-store.png" alt="App Store" />
+          </div>
+        </div>
+        <div class="footer-col-2">
+          <img src="logo-white.png" alt="Redstore Logo" />
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga sapiente qui consequuntur reiciendis fugit ea
+            optio neque tempor
+          </p>
+        </div>
+        <div class="footer-col-3">
+          <h3>Useful Links</h3>
+          <ul>
+            <li><a href="#">Coupons</a></li>
+            <li><a href="#">Blog Post</a></li>
+            <li><a href="#">Return Policy</a></li>
+            <li><a href="#">Join Affiliate</a></li>
+          </ul>
+        </div>
+        <div class="footer-col-4">
+          <h3>Follow Us</h3>
+          <ul>
+            <li>
+              <a href="https://www.facebook.com/lolo.caw.9/?_rdr" target="_blank">Facebook</a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/in/ahmad-arja-6a21432b6/" target="_blank">LinkedIN</a>
+            </li>
+            <li>
+              <a href="https://www.instagram.com/ahmad.al3rja?igsh=MWlnMjh0YmNjcGZpZg%3D%3D&utm_source=qr"
+                target="_blank">Instagram</a>
+            </li>
+            <li><a href="https://www.youtube.com" target="_blank">YouTube</a></li>
+          </ul>
+        </div>
+      </div>
+      <hr />
+      <p class="developer">© 2025 Developed By Ahmad Alarjah</p>
+    </div>
+  </div>
+
+  <!-- JavaScript for loading products, cart, toasts, and modal -->
+  <script>
+
+    var MenuItems = document.getElementById("MenuItems");
+    if (MenuItems) {
+      MenuItems.style.maxHeight = "0px";
+    }
+    function menutoggle() {
+      if (MenuItems && MenuItems.style.maxHeight === "0px") {
+        MenuItems.style.maxHeight = "3002px";
+        MenuItems.style.zIndex = "1000 !important";
+        MenuItems.style.transition = "max-height 0.5s ease-in";
+        MenuItems.style.display = "block";
+        MenuItems.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+      } else if (MenuItems) {
+        MenuItems.style.maxHeight = "0px";
+      }
+    }
+
+
+    let cartCount = localStorage.getItem("cartCount")
+      ? parseInt(localStorage.getItem("cartCount"))
+      : 0;
+    const cartIcon = document.getElementById("cart-icon");
+
+    function updateCartCount(count) {
+      cartCount = count;
+      if (cartCount > 0) {
+        cartIcon.setAttribute("data-count", cartCount);
+        cartIcon.classList.add("active");
+      } else {
+        cartIcon.removeAttribute("data-count");
+        cartIcon.classList.remove("active");
+      }
+      localStorage.setItem("cartCount", cartCount);
+    }
+    updateCartCount(cartCount);
+
+
+    function showToast(message) {
+      const toastContainer = document.getElementById("toast-container");
+      const toast = document.createElement("div");
+      toast.classList.add("toast");
+      toast.textContent = message;
+      toastContainer.appendChild(toast);
+
+      requestAnimationFrame(() => {
+        toast.classList.add("show");
+      });
+
+      setTimeout(() => {
+        toast.classList.remove("show");
+        toast.addEventListener("transitionend", () => {
+          toast.remove();
+        }, { once: true });
+      }, 2000);
+    }
+
+
+    function addToLocalCart(product) {
+
+      product.price = parseFloat(product.price);
+
+      let cart = localStorage.getItem("cart")
+        ? JSON.parse(localStorage.getItem("cart"))
+        : [];
+      const existingItem = cart.find((item) => item.id === product.id);
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cart.push(product);
+      }
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
+
+
+    function renderStars(rating) {
+      let stars = "";
+      for (let i = 1; i <= 5; i++) {
+        if (i <= Math.floor(rating)) {
+          stars += '<i class="fa fa-star"></i>';
+        } else if (i === Math.ceil(rating) && !Number.isInteger(rating)) {
+          stars += '<i class="fa fa-star-half-o"></i>';
+        } else {
+          stars += '<i class="fa fa-star-o"></i>';
+        }
+      }
+      return stars;
+    }
+
+
+    function createProductItem(perfume) {
+      const productDiv = document.createElement("div");
+      productDiv.classList.add("col-4");
+      productDiv.innerHTML = `
+        <img src="${perfume.image}" alt="${perfume.name}">
+        <h4>${perfume.name}</h4>
+        <div class="rating">${renderStars(perfume.rating)}</div>
+        <p style="font-size:19px;">$${perfume.price.toFixed(2)}</p>
+        <p style="color: gray !important; font-size:12px;">
+          ${perfume.description}
+        </p>
+        <button
+          class="add-to-cart"
+          data-product-id="${perfume.id}"
+          data-product-name="${perfume.name}"
+          data-product-price="${perfume.price}"
+          data-product-image="${perfume.image}"
+        >
+          Add to Cart
+        </button>
+      `;
+
+
+      productDiv.addEventListener("click", (evt) => {
+        if (!evt.target.classList.contains("add-to-cart")) {
+          openProductModal(perfume);
+        }
+      });
+
+      return productDiv;
+    }
+
+
+    function openProductModal(perfume) {
+      const modal = document.getElementById("single-product-modal");
+      const detailsDiv = document.getElementById("single-product-details");
+
+      detailsDiv.innerHTML = `
+        <img src="${perfume.image}" alt="${perfume.name}">
+        <h2>${perfume.name}</h2>
+        <div class="rating">${renderStars(perfume.rating)}</div>
+        <p style="font-size:18px; color:#333; margin:15px 0;">
+          Price: $${perfume.price.toFixed(2)}
+        </p>
+        <p>${perfume.description}</p>
+        <button 
+          class="add-to-cart-modal"
+          data-product-id="${perfume.id}" 
+          data-product-name="${perfume.name}" 
+          data-product-price="${perfume.price}" 
+          data-product-image="${perfume.image}"
+        >
+          Add to Cart
+        </button>
+      `;
+
+
+      modal.classList.add("modal");
+      modal.style.display = "block";
+
+
+      const modalCartBtn = detailsDiv.querySelector(".add-to-cart-modal");
+      modalCartBtn.addEventListener("click", () => {
+
+        const modalProduct = {
+          id: perfume.id,
+          name: perfume.name,
+          price: parseFloat(perfume.price),
+          image: perfume.image,
+          quantity: 1
+        };
+
+
+        addToLocalCart(modalProduct);
+
+        updateCartCount(cartCount + 1);
+
+        showToast("Item added to cart!");
+
+
+        modalCartBtn.textContent = "Added!";
+        modalCartBtn.style.backgroundColor = "#4CAF50";
+        modalCartBtn.disabled = true;
+
+        setTimeout(() => {
+          modalCartBtn.textContent = "Add to Cart";
+          modalCartBtn.style.backgroundColor = "#ff4b2b";
+          modalCartBtn.disabled = false;
+        }, 1000);
+      });
+    }
+
+
+    function attachAddToCartListeners() {
+      const addToCartButtons = document.querySelectorAll(".add-to-cart");
+      addToCartButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const product = {
+            id: parseInt(button.getAttribute("data-product-id")),
+            name: button.getAttribute("data-product-name"),
+            price: parseFloat(button.getAttribute("data-product-price")),
+            image: button.getAttribute("data-product-image"),
+            quantity: 1
+          };
+
+
+          addToLocalCart(product);
+
+          updateCartCount(cartCount + 1);
+
+          showToast("Item added to cart!");
+
+
+          button.textContent = "Added!";
+          button.style.backgroundColor = "#4CAF50";
+          button.disabled = true;
+
+          setTimeout(() => {
+            button.textContent = "Add to Cart";
+            button.style.backgroundColor = "#ff4b2b";
+            button.disabled = false;
+          }, 1000);
+        });
+      });
+    }
+
+
+    let masterProductList = [];
+
+
+    function loadProducts() {
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "perfumes.json", true);
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          try {
+            var data = JSON.parse(xhr.responseText);
+            masterProductList = data;
+            renderProducts(masterProductList);
+          } catch (e) {
+            console.error("Error parsing JSON:", e);
+          }
+        } else if (xhr.readyState === 4 && xhr.status !== 200) {
+          console.error("Failed to load perfumes.json. Status:", xhr.status);
+        }
+      };
+      xhr.send();
+    }
+
+
+    function filterProducts(query) {
+      const filtered = masterProductList.filter((prod) =>
+        prod.name.toLowerCase().includes(query.toLowerCase())
+      );
+      renderProducts(filtered);
+    }
+
+
+    function sortProducts(option) {
+      let sortedList = [...masterProductList];
+      switch (option) {
+        case "price-asc":
+          sortedList.sort((a, b) => a.price - b.price);
+          break;
+        case "price-desc":
+          sortedList.sort((a, b) => b.price - a.price);
+          break;
+        case "popularity":
+          sortedList.sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
+          break;
+        case "sale":
+          sortedList.sort((a, b) => (b.sale || 0) - (a.sale || 0));
+          break;
+        case "rating":
+          sortedList.sort((a, b) => b.rating - a.rating);
+          break;
+        default:
+          sortedList = [...masterProductList];
+      }
+      renderProducts(sortedList);
+    }
+
+
+    function debounce(func, delay) {
+      let debounceTimer;
+      return function () {
+        const context = this;
+        const args = arguments;
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => func.apply(context, args), delay);
+      };
+    }
+
+
+    window.onload = function () {
+      loadProducts();
+      initializeEventListeners();
+    };
+
+
+    function initializeEventListeners() {
+      const searchInput = document.getElementById("search-input");
+      const sortSelect = document.getElementById("sort-select");
+
+
+      searchInput.addEventListener(
+        "input",
+        debounce((e) => {
+          filterProducts(e.target.value.trim());
+        }, 300)
+      );
+
+
+      sortSelect.addEventListener("change", (e) => {
+        sortProducts(e.target.value);
+      });
+    }
+
+
+    document.getElementById("close-modal").addEventListener("click", closeProductModal);
+    window.addEventListener("click", (evt) => {
+      const modal = document.getElementById("single-product-modal");
+      if (evt.target === modal) {
+        closeProductModal();
+      }
+    });
+    function closeProductModal() {
+      const modal = document.getElementById("single-product-modal");
+      modal.style.display = "none";
+    }
+
+
+    function renderProducts(productList) {
+      const productContainer = document.getElementById("product-container");
+      productContainer.innerHTML = "";
+
+      if (productList.length === 0) {
+        productContainer.innerHTML = "<p>No products found.</p>";
+
+
+        productContainer.style.minHeight = "700px";
+
+        return;
+      }
+
+      productList.forEach((perfume) => {
+        const productItem = createProductItem(perfume);
+        productContainer.appendChild(productItem);
+      });
+
+      attachAddToCartListeners();
+    }
+
+  </script>
+
+  <script>
+
+    var MenuItems = document.getElementById("MenuItems");
+    if (MenuItems) {
+      MenuItems.style.maxHeight = "0px";
+    }
+
+
+    const currentLocation = window.location.href;
+    const navLinks = document.querySelectorAll("#MenuItems li a");
+    navLinks.forEach((link) => {
+      if (link.href === currentLocation) {
+        link.classList.add("active");
+      } else {
+        link.classList.remove("active");
+      }
+    });
+  </script>
+</body>
+
+</html>
