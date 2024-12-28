@@ -1081,3 +1081,6 @@ span {
 #single-product-details .add-to-cart-modal:hover {
     background-color: #ff416c;
 }
+.product-item,.col-4 {
+    cursor: pointer;
+}
